@@ -1,0 +1,40 @@
+## Spécifications du project Analyseur de questionnaire XLSForm
+### Description
+
+Le projet consiste à écrire un programme qui va identifier tous les chemins
+posibles grâce au structure de contrôle indiqué dans un questionnaire XLSForm et réaliser 
+un schéma sous forme d'arbre génealogique.
+
+### CONTEXTE :
+un questionnaire est un outil utlisé pour collecter des données, il contient dans un ordre
+précis les questions qui seront posées aux enquêtés sur le terrain. Sur le terrain
+la suite logique de ces questions d'un enquêté lambda dépend de ses réponses pour les questions précédentes, il est donc important de véifier la comformité de l'intégralité des évènements possibles avant d'aller sur le terrain.
+Ce travail devient fastidieux et embarenssant quand il s'agit d'un lourd questionnaire (500 questions par exemple).
+il serait donc important d'avoir un programme qui nous donnera l'ensemble les chemins possibles que l'on peut rencontrer sur le terrain et c'est à nous de commencer par réaliser ses évènemets pour voir si cela est conforme afin d'éviter des erreurs.
+
+un questionnaire XLSForm est constitué de 3 feuilles :
+* survey : feuille principale renseignant les variables associées 
+aux questions et des conditions au niveau de chaque question dans l'orde
+* choices : feuille renseignant les modalités des variables, elle représente le dictionnaire des questionq à choix unique
+ou multiple.
+* settings : feuille renseignant sur les paramêtres généraux, le titire du questionnaire...
+
+### Types de données
+
+Le questionnaire XLSForm est de format excel .xlsx
+* la feuille survey est constituée de type( nature de la variable assciée au question : text, select_one, select_multiple,..),
+de name ( nom ou code de la question ), label( la question même), relevant(des condictions), constraint, required( yes/no)
+* la feuille choices est constituée de list_name(nom unique de l'ensemble des modalités d'une variable), name (le code de la modalité), label(la modalité elle meme)
+
+### Déroulement
+
+* Téléverser le questionnaire XLSForm
+* vérifications des feuilles du fichier vérifications des colonnes obligatoires et leurs nomencature dans chaque feuilles
+* validation des contraintes
+* Générer la liste des corrections faites
+* Génerer la liste des chemins
+* Générer le graphe
+
+ 
+### Analyse descendante
+
