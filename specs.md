@@ -1,40 +1,31 @@
-## Spécifications du project Analyseur de questionnaire XLSForm
-### Description
+# Spécifications du projet : Analyseur de questionnaire XLSForm
 
-Le projet consiste à écrire un programme qui va identifier tous les chemins
-posibles grâce au structure de contrôle indiqué dans un questionnaire XLSForm et réaliser 
-un schéma sous forme d'arbre génealogique.
+## 1. Description
+Le projet consiste à développer un utilitaire (moteur d'analyse / CLI) capable d'analyser un questionnaire au format XLSForm afin d'identifier tous les chemins et sauts possibles générés par les structures de contrôle (skip logic / relevant). L'outil modélisera ensuite ces chemins sous forme de graphe ou d'arborescence.
 
-### CONTEXTE :
-un questionnaire est un outil utlisé pour collecter des données, il contient dans un ordre
-précis les questions qui seront posées aux enquêtés sur le terrain. Sur le terrain
-la suite logique de ces questions d'un enquêté lambda dépend de ses réponses pour les questions précédentes, il est donc important de véifier la comformité de l'intégralité des évènements possibles avant d'aller sur le terrain.
-Ce travail devient fastidieux et embarenssant quand il s'agit d'un lourd questionnaire (500 questions par exemple).
-il serait donc important d'avoir un programme qui nous donnera l'ensemble les chemins possibles que l'on peut rencontrer sur le terrain et c'est à nous de commencer par réaliser ses évènemets pour voir si cela est conforme afin d'éviter des erreurs.
+## 2. Contexte et Problématique
+La conception de questionnaires numériques (via KoboToolbox, ODK, etc.) nécessite souvent des formulaires longs et complexes avec de multiples sauts conditionnels. 
+Bien que la création directe via Excel (XLSForm) soit beaucoup plus rapide et pratique que les interfaces web (qui nécessitent de nombreux clics), la phase de **test des conditions de sauts** reste un point noir.
 
-un questionnaire XLSForm est constitué de 3 feuilles :
-* survey : feuille principale renseignant les variables associées 
-aux questions et des conditions au niveau de chaque question dans l'orde
-* choices : feuille renseignant les modalités des variables, elle représente le dictionnaire des questionq à choix unique
-ou multiple.
-* settings : feuille renseignant sur les paramêtres généraux, le titire du questionnaire...
-
-### Types de données
-
-Le questionnaire XLSForm est de format excel .xlsx
-* la feuille survey est constituée de type( nature de la variable assciée au question : text, select_one, select_multiple,..),
-de name ( nom ou code de la question ), label( la question même), relevant(des condictions), constraint, required( yes/no)
-* la feuille choices est constituée de list_name(nom unique de l'ensemble des modalités d'une variable), name (le code de la modalité), label(la modalité elle meme)
-
-### Déroulement
-
-* Téléverser le questionnaire XLSForm
-* vérifications des feuilles du fichier vérifications des colonnes obligatoires et leurs nomencature dans chaque feuilles
-* validation des contraintes
-* Générer la liste des corrections faites
-* Génerer la liste des chemins
-* Générer le graphe
-
+Actuellement, pour s'assurer que les sauts fonctionnent correctement, les équipes doivent réaliser de multiples tests manuels de bout en bout, en essayant chaque combinaison de réponses, ce qui peut prendre plusieurs jours de travail pour plusieurs personnes. 
  
-### Analyse descendante
+L'idée est de créer un programme qui automatise cette vérification. En extrayant à l'avance toutes les arborescences possibles, on s'assure que le questionnaire est robuste avant le déploiement sur le terrain.
 
+## 3. Types de Données (Format d'entrée)
+Le fichier attendu est un classeur Excel `.xlsx` respectant le standard XLSForm, composé de 3 feuilles principales :
+* **survey** : Feuille principale listant les variables (questions), leur type (`text`, `select_one`, `select_multiple`, etc.), leur identifiant (`name`), leur libellé (`label`), les conditions d'affichage (`relevant`), les contraintes (`constraint`), et le caractère obligatoire (`required`).
+* **choices** : Le dictionnaire des modalités de réponses. Elle associe un nom de liste (`list_name`) aux différentes options de réponse (code `name` et libellé `label`).
+* **settings** : Paramètres globaux du questionnaire (titre, version, etc.).
+
+## 4. Déroulement du Programme (Workflow)
+L'exécution du programme suivra ces étapes :
+1. **Lecture du fichier** : Téléversement et parsing du fichier XLSForm (`.xlsx`).
+2. **Vérification de la structure** : Validation de la présence des feuilles obligatoires (`survey`, `choices`, `settings`) et des colonnes requises.
+3. **Analyse des logiques** : Évaluation des colonnes `relevant` et `constraint`.
+4. **Génération des chemins** : Calcul de tous les parcours (chemins) possibles en fonction des choix multiples.
+5. **Restitution** : 
+   - Génération d'une liste détaillée des chemins.
+   - Génération d'un graphe ou d'une représentation visuelle de l'arborescence.
+
+## 5. Analyse Descendante
+*(À définir)*
